@@ -19,14 +19,13 @@ review_dict = {'review': [],
                 }
 
 for review in reviewlist:
-    # url_start_time = time.time() #start clock
     t_review = tb(review)
     review_sentiment = t_review.sentiment.polarity
 
     review_dict['review'].append(review)
     review_dict['sentiment'].append(review_sentiment)
 
-# writing dealer_dict to csv
+# writing review_dict to csv
 df = pd.DataFrame(review_dict)
 print(df.head())
 with open(output_csv, 'a', newline='', encoding = "utf-8") as f:
