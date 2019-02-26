@@ -2,33 +2,19 @@ from textblob import TextBlob as tb
 import pandas as pd
 import csv
 
-output_csv = 'NissanReviewSentiments.csv'
-input_csv = 'NissanCustomerReviews.csv'
+output_csv = 'output.csv'
+input_csv = 'input.csv'
 
-file_reader =  open(input_csv, "r", encoding = 'utf-8')
-read = csv.reader(file_reader)
-reviews = [x[0] for x in read if x]
-reviewlist = []
+df = pd.read_csv(input_csv, encoding = 'utf-8')
 
-for review in reviews:
-    reviewlist.append(review)
-
-
-review_dict = {'review': [],
-               'sentiment': []
-                }
-
-for review in reviewlist:
-    t_review = tb(review)
+def sentiment(text):
+    t_review = tb(text)
     review_sentiment = t_review.sentiment.polarity
+    return review_sentiment 
 
-    review_dict['review'].append(review)
-    review_dict['sentiment'].append(review_sentiment)
+df['sentimentcolumn'] = df['reviewcolumn'].apply(lambda review: sentiment(str(review)))
 
-# writing review_dict to csv
-df = pd.DataFrame(review_dict)
 print(df.head())
+
 with open(output_csv, 'a', newline='', encoding = "utf-8") as f:
-    df.to_csv(f, header=False)
-
-
+    df.to_csv(f, header=True)
